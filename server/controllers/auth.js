@@ -2,16 +2,18 @@ const User = require('../models/user');
 const jwt = require('jwt-simple');
 const config = require('../config');
 
+function createUserToken(user){
+		let timestamp = new Date().getTime()
+		return jwt.encode({sub: user.id, iat: timestamp }, config.secret)
+	}
+	
 exports.signup = function(req, res){
 	//res.send("User Auth!")
 	console.log(req.body)
 	var email = req.body.email
 	var password = req.body.password
 
-	function createUserToken(user){
-		let timestamp = new Date().getTime()
-		return jwt.encode({sub: user.id, iat: timestamp }, config.secret)
-	}
+	
 
 
 	if(!email || !password){
@@ -38,4 +40,12 @@ exports.signup = function(req, res){
 			res.json({token: createUserToken(user)})
 		})
 	})
+}
+
+
+
+exports.signin = function(req, res, next){
+	//User has already had their email and pw auth
+	//we just need to give them a token
+	res.send({ token: createUserToken(req.user) });
 }

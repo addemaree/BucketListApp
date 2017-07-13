@@ -9,7 +9,6 @@ export default class App extends Component{
 		return(
 				<div>
 					<NavBarHeader />
-					//<Video />
 					<BandList />
 				</div>
 			);
